@@ -125,3 +125,16 @@ def get_random_point_geography():
     
     return return_dict
 
+def get_distance_crow_flies(source_lat, source_lng, dest_lat, dest_lng):
+
+    sql = """
+        select st_distance(
+            ST_Transform(ST_SetSRID(ST_MakePoint({source_lng}, {source_lat}), 4326), 27700),
+            ST_Transform(ST_SetSRID(ST_MakePoint({dest_lng}, {dest_lat}), 4326), 27700)
+        ) as distance
+    
+    """
+    
+    cur.execute(sql.format(**locals()))
+    
+    return {"distance_crowflies_km":  cur.fetchone()[0]}

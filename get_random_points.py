@@ -137,4 +137,11 @@ def get_distance_crow_flies(source_lat, source_lng, dest_lat, dest_lng):
     
     cur.execute(sql.format(**locals()))
     
-    return {"distance_crowflies_km":  cur.fetchone()[0]}
+    return {"distance_crowflies_km":  cur.fetchone()[0]/1000}
+
+for r in df.iterrows():
+    index = r[0]
+    row = r[1]
+    
+    df.loc[index, "distance_crow_flies"] = get_distance_crow_flies(row["demand_lat"], row["demand_lng"], row["supply_lat"], row["supply_lng"])["distance_crowflies_km"]
+    
